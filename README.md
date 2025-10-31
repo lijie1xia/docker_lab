@@ -10,7 +10,23 @@
 - 熟悉前后端项目的容器化部署流程
 
 ## 🧱 项目结构
-
+docker-lab/
+├── flask-app/
+│   ├── app.py
+│   ├── requirements.txt
+│   └── dockerfile
+│
+├── my-react-app/
+│   ├── src/
+│   ├── package.json
+│   ├── .dockerignore
+│   └── Dockerfile
+│
+├── mysql-volume-test/
+│   ├── init.sql
+│   └── docker-compose.yml
+│
+└── README.md
 
 ## 🛠️ 使用方法
 ```bash
