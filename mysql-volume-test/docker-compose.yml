@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  # Flask 后端服务
+  flask-app:
+    build: ../flask-app     # 指向 flask-app 目录（有 Dockerfile）
+    container_name: flask-app
+    ports:
+      - "5000:9090"         # 左边主机端口，右边容器端口 (app.run(port=9090))
+    environment:
+      - FLASK_ENV=development
+      - MYSQL_HOST=mysql-db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD='1234!@#$'
+      - MYSQL_DATABASE=testdb
+    depends_on:
+      - mysql-db             # 确保 MySQL 先启动
+    networks:
+      - backend-net
+
+  # MySQL 数据库服务
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-test2
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD='1234!@#$'
+      - MYSQL_DATABASE=testdb
+    ports:
+      - "3307:3306"         # 避免和本地的 MySQL 冲突
+    volumes:
+      - mysql-data:/var/lib/mysql         # 数据持久化卷
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 初始化SQL脚本（可选）
+    networks:
+      - backend-net
+
+# 定义网络（让 Flask 能通过名字 mysql-db 访问数据库）
+networks:
+  backend-net:
+
+# 定义卷（让数据库数据持久化）
+volumes:
+  mysql-data:

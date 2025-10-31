@@ -1,0 +1,27 @@
+# 使用轻量级python基础镜像
+FROM python:3.10-slim
+
+# 设置工作目录
+WORKDIR /app
+
+# 安装依赖
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 复制项目源码到容器中
+COPY . .
+
+# 暴露端口
+EXPOSE 9090
+
+# 设置Flask环境变量（可选）
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HSOT=0.0.0.0
+ENV FLASK_RUN_PORT=9090
+
+# 定义启动命令
+CMD ["python", "app.py"]
+# 注意CMD后面要有空格,否则Docker会以为你在写一个新的指令名
+# CMD 是 Dockerfile 的一个指令关键字；
+#它后面要么接 Shell 格式字符串（例如 CMD python app.py），
+#要么接 JSON 数组格式（例如 CMD ["python", "app.py"]）
